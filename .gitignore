@@ -119,3 +119,9 @@ dist
 
 # End of https://mrkandreev.name/snippets/gitignore-generator/#Node
 /src/generated/prisma
+
+node_modules
+undefined
+.vscode
+.env*
+prisma/migrations/
