@@ -1,0 +1,23 @@
+{
+  "name": "inkbid-api",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "dev": "tsc-watch --onSuccess \"node dist/server\"",
+    "format": "npx prettier --write .",
+    "format-check": "npx prettier --check ."
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "packageManager": "pnpm@10.17.0",
+  "devDependencies": {
+    "@types/express": "^5.0.6",
+    "prettier": "^3.8.0",
+    "tsc-watch": "^7.2.0"
+  },
+  "dependencies": {
+    "express": "^5.2.1"
+  }
+}
