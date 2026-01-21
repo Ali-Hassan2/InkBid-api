@@ -3,6 +3,7 @@
   "version": "1.0.0",
   "description": "",
   "main": "index.js",
+  "type": "module",
   "scripts": {
     "dev": "tsc-watch --onSuccess \"node dist/server\"",
     "format": "npx prettier --write .",
@@ -14,10 +15,13 @@
   "packageManager": "pnpm@10.17.0",
   "devDependencies": {
     "@types/express": "^5.0.6",
+    "@types/node": "^25.0.9",
     "prettier": "^3.8.0",
     "tsc-watch": "^7.2.0"
   },
   "dependencies": {
-    "express": "^5.2.1"
+    "dotenv": "^17.2.3",
+    "express": "^5.2.1",
+    "prisma": "^7.2.0"
   }
 }
