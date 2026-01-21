@@ -7,11 +7,76 @@ datasource db {
   provider = "postgresql"
 }
 
-model user {
+enum Role {
+  owner
+  client
+}
+
+enum PriceType {
+  free
+  paid
+}
+
+enum BidsCat {
+  account_creation
+  daily
+  referral
+}
+
+model Genre {
+  id          Int     @id @default(autoincrement())
+  name        String
+  description String?
+  books       Book[]
+}
+
+model Book {
+  id              Int           @id @default(autoincrement())
+  bookName        String
+  bookAuthor      String?
+  bookDescription String
+  bookPrice       Int?
+  priceType       PriceType     @default(paid)
+  isLockedBook    Boolean       @default(true)
+  genreId         Int
+  genre           Genre         @relation(fields: [genreId], references: [id])
+  libraryEntries  UserLibrary[]
+}
+
+model Member {
+  id                        Int           @id @default(autoincrement())
+  fullName                  String
+  username                  String        @unique
+  password                  String
+  email                     String
+  isUserVerified            Boolean       @default(false)
+  verificationCode          String?
+  verificationCodeExpiry    DateTime?
+  isVerificationCodeExpired Boolean       @default(false)
+  role                      Role          @default(client)
+  image                     Json?
+  isActive                  Boolean       @default(true)
+  createdAt                 DateTime      @default(now())
+  bids                      Bids[]
+  library                   UserLibrary[]
+}
+
+model Bids {
+  id       Int     @id @default(autoincrement())
+  memberId Int
+  type     BidsCat @default(account_creation)
+  amount   Int     @default(0)
+  member   Member  @relation(fields: [memberId], references: [id])
+}
+
+model UserLibrary {
   id         Int      @id @default(autoincrement())
-  username   String
-  fullName   String
-  email      String   @unique
-  password   String
-  created_at DateTime @default(now())
+  memberId   Int
+  bookId     Int
+  unlockedAt DateTime @default(now())
+
+  member Member @relation(fields: [memberId], references: [id])
+  book   Book   @relation(fields: [bookId], references: [id])
+
+  @@unique([memberId, bookId])
 }
