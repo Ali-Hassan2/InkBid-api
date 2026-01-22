@@ -23,17 +23,17 @@ app.use(requestIdMiddleware);
 app.use(helmet());
 app.use(hpp());
 app.use(cookieParser());
-app.use(compression());
 app.use(morgan(isProduction ? 'combined' : 'dev'));
+app.use(compression());
 app.use(
-    app.use(
-      cors({
-        origin: '*',
-        credentials: true,
-        methods: ['GET', 'POST', 'PUT', 'PATCH', 'DELETE', 'OPTIONS'],
-        allowedHeaders: ['Content-Type', 'Cookie', 'Authorization'],
-      }),
-    );
+  cors({
+    origin: '*',
+    credentials: true,
+    methods: ['GET', 'POST', 'PUT', 'PATCH', 'DELETE', 'OPTIONS'],
+    allowedHeaders: ['Content-Type', 'Cookie', 'Authorization'],
+  }),
+);
+app.use(
   rateLimit({
     windowMs: 15 * 60 * 1000,
     max: isProduction ? 100 : 1000,
