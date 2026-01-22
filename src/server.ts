@@ -2,14 +2,15 @@ import express from 'express';
 import cors from 'cors';
 import dotenv from 'dotenv';
 import morgan from 'morgan';
-import colors from 'colors';
 import cookieParser from 'cookie-parser';
+import compression from 'compression';
 import helmet from 'helmet';
+import hpp from 'hpp';
 import { randomUUID } from 'crypto';
+import colors from 'colors';
 import rateLimit from 'express-rate-limit';
 import { requestIdMiddleware } from './app/middlewares/requestId.middleware.js';
 import { rateLimitErrorMessage } from './constants/index.js';
-import compression from 'compression';
 
 dotenv.config();
 
@@ -18,20 +19,21 @@ const port = process.env.PORT || 8123;
 const isProduction = process.env.NODE_ENV === 'production';
 
 app.use(express.json());
-app.use(
-  cors({
-    origin: '*',
-    credentials: true,
-    methods: ['GET', 'POST', 'PUT', 'PATCH', 'DELETE', 'OPTIONS'],
-    allowedHeaders: ['Content-Type', 'Cookie', 'Authorization'],
-  }),
-);
 app.use(requestIdMiddleware);
 app.use(helmet());
-app.use(morgan(isProduction ? 'combined' : 'dev'));
+app.use(hpp());
 app.use(cookieParser());
 app.use(compression());
+app.use(morgan(isProduction ? 'combined' : 'dev'));
 app.use(
+    app.use(
+      cors({
+        origin: '*',
+        credentials: true,
+        methods: ['GET', 'POST', 'PUT', 'PATCH', 'DELETE', 'OPTIONS'],
+        allowedHeaders: ['Content-Type', 'Cookie', 'Authorization'],
+      }),
+    );
   rateLimit({
     windowMs: 15 * 60 * 1000,
     max: isProduction ? 100 : 1000,
