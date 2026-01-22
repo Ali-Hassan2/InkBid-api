@@ -1,6 +1,8 @@
-# Create member specific routes:
-    The routes include:
-        registration -> making member a verified member
-        authentication route
-        bids categorization [types: 'daily', 'referral', 'creation']
-        
+# week 1 todo:
+    # Create member specific routes:
+        The routes include:
+            - registration -> making member a verified member
+            - authentication route
+            - bids categorization [types: 'daily', 'referral', 'creation']
+            - unique idenities verification
+            
