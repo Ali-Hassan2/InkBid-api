@@ -7,6 +7,9 @@ import cookieParser from 'cookie-parser';
 import helmet from 'helmet';
 import { randomUUID } from 'crypto';
 import rateLimit from 'express-rate-limit';
+import { requestIdMiddleware } from './app/middlewares/requestId.middleware.js';
+import { rateLimitErrorMessage } from './constants/index.js';
+import compression from 'compression';
 
 dotenv.config();
 
@@ -23,14 +26,16 @@ app.use(
     allowedHeaders: ['Content-Type', 'Cookie', 'Authorization'],
   }),
 );
+app.use(requestIdMiddleware);
 app.use(helmet());
 app.use(morgan(isProduction ? 'combined' : 'dev'));
 app.use(cookieParser());
+app.use(compression());
 app.use(
   rateLimit({
     windowMs: 15 * 60 * 1000,
     max: isProduction ? 100 : 1000,
-    message: '',
+    message: rateLimitErrorMessage,
     standardHeaders: true,
     legacyHeaders: false,
   }),
@@ -61,6 +66,7 @@ const turningoffServer = async () => {
   if (Server) {
     Server.close(() => {
       console.log(colors.bgRed('Server Closed.'));
+      process.exit(0);
     });
   }
 };
