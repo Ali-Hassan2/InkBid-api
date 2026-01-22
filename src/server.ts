@@ -27,10 +27,15 @@ app.use(helmet());
 app.use(morgan(isProduction ? 'combined' : 'dev'));
 app.use(cookieParser());
 app.use(
-    rateLimit({
-        
-    })
-)
+  rateLimit({
+    windowMs: 15 * 60 * 1000,
+    max: isProduction ? 100 : 1000,
+    message: '',
+    standardHeaders: true,
+    legacyHeaders: false,
+  }),
+);
+
 let Server: any;
 const start_server = () => {
   return new Promise((resolve, reject) => {
